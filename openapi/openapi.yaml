@@ -25,6 +25,83 @@ tags:
     description: Tasks
 
 paths:
+  /legal-entities:
+    get:
+      tags:
+        - federation
+      description: Retrieve a list of all legal entities.
+      responses:
+        200:
+          description: List of legal entities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BankAccountDTO"
+
+    post:
+      tags:
+        - federation
+      description: Create a new legal entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountDTO"
+      responses:
+        201:
+          description: Legal entity created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UUIDResponse"
+
+  /legal-entities/{id}:
+    patch:
+      tags:
+        - federation
+      description: Partially update an existing legal entity by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique ID of the legal entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountDTO"
+      responses:
+        200:
+          description: Legal entity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountDTO"
+        404:
+          description: Legal entity not found
+
+    delete:
+      tags:
+        - federation
+      description: Delete a legal entity by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique ID of the legal entity.
+      responses:
+        204:
+          description: Legal entity deleted successfully
+        404:
+          description: Legal entity not found
   /about:
     get:
       tags:
@@ -3400,6 +3477,33 @@ components:
           validate: "uuid"
 
   schemas:
+
+    BankAccountDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        accountNumber:
+          type: string
+        bankName:
+          type: string
+        accountHolderName:
+          type: string
+        bik:           
+          type: string
+        address:         
+          type: string
+        k_Bill:           
+          type: string
+        r_Bill:           
+          type: string
+        currency:        
+          type: string
+        comment:           
+          type: string
+
+
+
     NameRequest:
       type: object
       required:

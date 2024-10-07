@@ -30,6 +30,7 @@ import (
 	"github.com/krisch/crm-backend/internal/task"
 	"github.com/krisch/crm-backend/pkg/postgres"
 	"github.com/krisch/crm-backend/pkg/redis"
+	"github.com/krisch/crm-backend/internal/legalentities"
 )
 
 func s3Conf(conf *configs.Configs) s3.Conf {
@@ -130,6 +131,9 @@ func InitApp(name string, creds postgres.Creds, metrics bool, rc redis.Creds) (*
 		catalogs.NewRepository,
 		catalogs.New,
 
+		legalentities.NewRepository,
+		legalentities.NewService,
+
 		NewApp,
 	)
 
@@ -162,6 +166,8 @@ func NewApp(name string, conf *configs.Configs, gdb *postgres.GDB, rds *redis.RD
 	smsService *sms.Service,
 	agentsService *agents.Service,
 	permissionsService *permissions.Service,
+	legalentitiesService *legalentities.LegalEService,
+
 ) *App {
 	w := &App{
 		Env:  conf.ENV,
@@ -206,6 +212,7 @@ func NewApp(name string, conf *configs.Configs, gdb *postgres.GDB, rds *redis.RD
 	w.SMSService = smsService
 	w.AgentsService = agentsService
 	w.PermissionsService = permissionsService
+	w.LegalEntitiesService = legalentitiesService
 
 	return w
 }
